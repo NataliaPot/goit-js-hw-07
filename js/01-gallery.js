@@ -29,13 +29,21 @@ function clickImg(event) {
   if (target.nodeName !== "IMG") {
     return;
   }
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
     <img src="${target.dataset.source}">
-`);
+`,
+    {
+      onShow: () => {
+        document.addEventListener("keydown", closeEsc);
+      },
+      onClose: () => {
+        document.removeEventListener("keydown", closeEsc);
+      },
+    }
+  );
 
   instance.show();
-
-  document.addEventListener("keydown", closeEsc);
 
   function closeEsc(event) {
     if (event.key === "Escape") {
@@ -43,5 +51,3 @@ function clickImg(event) {
     }
   }
 }
-
-console.log(galleryItems);
